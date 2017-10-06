@@ -68,7 +68,6 @@ public class CampgroundCLI {
 		  System.out.println("Area: " +String.format("%20s",park.getArea()));
 		  System.out.println("Annual Visitors: " +String.format("%11s", park.getVisitors()));
 		  System.out.println("");
-//		  System.out.println(park.getDescription()+"\n");
 		  int charCount = 0;
 		  for(String word: park.getDescription().split(" ")){
 			  System.out.print(word+" ");
@@ -82,16 +81,18 @@ public class CampgroundCLI {
 		  
 		String choice = (String)menu.getChoiceFromOptions(CAMP_MENU_OPTIONS);
 			if(choice.equals("1")){
-//				  handleViewCampground(choice);	
+//			  handleViewCampground(choice);	
 			}
 	
-		 while(true){
-		  Campground choice2 = (Campground)menu.getChoiceFromOptions(campgroundDAO.getAllCampgrounds().toArray());
-		  handleViewCampground(choice2);		
-	  }
+	
 			}
 		}
 		private void handleViewCampground(Campground camp) {
+			
+			 while(true){
+				  Campground choice2 = (Campground)menu.getChoiceFromOptions(campgroundDAO.getAllCampgrounds().toArray());
+				  handleViewCampground(choice2);		
+			  }
 //			while(true){
 		
 //			printHeading("Park Campgrounds");

@@ -1,5 +1,7 @@
 package JDBC;
 
-public class JDBCSiteDAO {
+import DAO.DAOSite;
+
+public class JDBCSiteDAO implements DAOSite{
 
 }

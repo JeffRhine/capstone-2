@@ -6,5 +6,5 @@ import com.techelevator.Campground;
 
 public interface DAOCampground {
 public List<Campground> getAllCampgrounds();
-public List<Campground> getCampgroundInfo(long choice);
+public List<Campground> getCampgroundInfoByPark(long choice);
 }

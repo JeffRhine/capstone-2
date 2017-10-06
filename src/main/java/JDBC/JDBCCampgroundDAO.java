@@ -33,9 +33,9 @@ public class JDBCCampgroundDAO implements DAOCampground {
 	}
 
 	@Override
-	public List<Campground> getCampgroundInfo(long choice) {
+	public List<Campground> getCampgroundInfoByPark(long choice) {
 		List<Campground> campInfo= new ArrayList<>();
-		String camp=("SELECT * FROM campground WHERE campground_id=?");
+		String camp=("SELECT * FROM campground WHERE park_id=?");
 		jdbcTemplate.update(camp,choice);
 		SqlRowSet campNextRow= jdbcTemplate.queryForRowSet(camp);
 		while(campNextRow.next()){

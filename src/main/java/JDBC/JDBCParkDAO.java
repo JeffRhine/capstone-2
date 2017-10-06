@@ -65,6 +65,12 @@ public class JDBCParkDAO implements DAOPark {
 		
 		return thePark;
 	}
+
+	@Override
+	public List<Park> getAllCampgroundsByParkId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 //	@Override
 //	public List<Park> getParkInfo() {
