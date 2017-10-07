@@ -1,5 +1,7 @@
 package com.techelevator;
 
+import java.math.BigDecimal;
+
 public class Site {
 private long siteId;
 private long campgroundId;
@@ -7,7 +9,9 @@ private long siteNum;
 private long maxOccupy;
 private boolean available;
 private long maxRVLength;
-private boolean utitlities;
+private boolean utilities;
+private BigDecimal dailyFee;
+
 public long getSiteId() {
 	return siteId;
 }
@@ -44,11 +48,17 @@ public long getMaxRVLength() {
 public void setMaxRVLength(long maxRVLength) {
 	this.maxRVLength = maxRVLength;
 }
-public boolean isUtitlities() {
-	return utitlities;
+public boolean isUtilities() {
+	return utilities;
 }
-public void setUtitlities(boolean utitlities) {
-	this.utitlities = utitlities;
+public void setUtilities(boolean utilities) {
+	this.utilities = utilities;
+}
+public BigDecimal getDailyFee() {
+	return dailyFee;
+}
+public void setDailyFee(BigDecimal dailyFee) {
+	this.dailyFee = dailyFee;
 }
 
 }

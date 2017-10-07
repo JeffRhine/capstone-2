@@ -11,6 +11,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import com.techelevator.Campground;
 import com.techelevator.Park;
 
+
 import DAO.DAOCampground;
 
 public class JDBCCampgroundDAO implements DAOCampground {
@@ -21,16 +22,28 @@ public class JDBCCampgroundDAO implements DAOCampground {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	@Override
-	public List<Campground> getAllCampgrounds() {
+	public List<Campground> getAllCampgrounds(long parkId) {
 		List<Campground> campInfo = new ArrayList<>();
-		String camps = "SELECT * FROM campground ";
-		SqlRowSet campNextRow = jdbcTemplate.queryForRowSet(camps);
-		while(campNextRow.next()) {
-			campInfo.add(mapRowToCamp(campNextRow));
+		String camp=("SELECT * FROM campground WHERE park_id=?");
+		SqlRowSet campNextRow = jdbcTemplate.queryForRowSet(camp,parkId);
+		while(campNextRow.next()) {		
+			Campground campground =mapRowToCampground(campNextRow);
+			campInfo.add(campground);
 		}
 		return campInfo;
 	}
+	private Campground mapRowToCampground(SqlRowSet campNextRow){
+		Campground campground = new Campground();
+		campground.setCampgroundId(campNextRow.getLong("campground_id"));
+		campground.setName(campNextRow.getString("name"));
+		campground.setOpen(campNextRow.getString("open_from_mm"));
+		campground.setClosed(campNextRow.getString("open_to_mm"));
+		campground.setFee(campNextRow.getBigDecimal("daily_fee"));
+		
+		return campground;
+		
+	}
+
 
 	@Override
 	public List<Campground> getCampgroundInfoByPark(long choice) {

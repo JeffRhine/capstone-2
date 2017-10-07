@@ -49,7 +49,7 @@ public void setFee(BigDecimal fee) {
 }
 @Override
 public String toString() {
-	return name ;
+	return name +"   "+ open + "    "+ closed+"    "+fee;
 }
 
 }

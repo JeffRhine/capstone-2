@@ -1,24 +1,32 @@
 package view;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
-
+import java.time.temporal.ChronoUnit;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import com.techelevator.Campground;
 import com.techelevator.Park;
+import com.techelevator.Site;
 
 import DAO.DAOCampground;
 import DAO.DAOPark;
+import DAO.DAOReservation;
 import DAO.DAOSite;
+import JDBC.JDBCCampgroundDAO;
 import JDBC.JDBCParkDAO;
+import JDBC.JDBCReservationDAO;
+import JDBC.JDBCSiteDAO;
 
 public class CampgroundCLI {
 	private Menu menu;
 	private DAOPark parkDAO;
 	private DAOCampground campgroundDAO;
 	private DAOSite siteDAO;
+	private DAOReservation reservationDAO;
 	
 	public static void main(String[] args) {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -32,6 +40,9 @@ public class CampgroundCLI {
 
 	public CampgroundCLI(DataSource datasource) {
 		parkDAO = new JDBCParkDAO(datasource);
+		campgroundDAO =new JDBCCampgroundDAO(datasource);
+		siteDAO = new JDBCSiteDAO(datasource);
+		reservationDAO = new JDBCReservationDAO(datasource);
 		menu = new Menu(System.in,System.out);
 	}
 	private static final String MENU_OPTION_RETURN_TO_QUIT = "Return to main menu";
@@ -45,8 +56,16 @@ public class CampgroundCLI {
 																		   MENU_OPTION_RETURN_TO_QUIT};
 
 	
+	private static final String MENU_OPTION_SEARCH_FOR_RESERVE = "Search for Available Reservation";
+	private static final String[] RESERVE_MENU_OPTIONS = new String[] { MENU_OPTION_SEARCH_FOR_RESERVE,														
+																		   MENU_OPTION_RETURN_TO_QUIT};
 	
-	
+	private static final String CAMPGROUND_CHOICE = "Which campground (enter 0 to cancel)?";
+	private static final String ARRIVAL_DATE = "What is the arrival date? ";
+	private static final String DEPARTURE_DATE = "What is the departure date? ";
+	private static final String[] RESERVATION_OPTIONS = new String[] { CAMPGROUND_CHOICE,
+																			ARRIVAL_DATE,
+																			DEPARTURE_DATE};
 	
 	private void run() {
 	String textInBold = "View Parks Interface";
@@ -80,19 +99,78 @@ public class CampgroundCLI {
 		  System.out.println("\n");
 		  
 		String choice = (String)menu.getChoiceFromOptions(CAMP_MENU_OPTIONS);
-			if(choice.equals("1")){
-//			  handleViewCampground(choice);	
+			if(choice.equals(CG_MENU_OPTION_ALL_CAMPGROUNDS)){
+			  handleViewCampground(park);	
+			}if(choice.equals(CG_MENU_OPTION_SEARCH_FOR_RESERVE)){
+				handleSearchReservation(park);
 			}
 	
 	
 			}
 		}
-		private void handleViewCampground(Campground camp) {
-			
+		private void handleViewCampground(Park park) {
+			printHeading("Park Campgrounds");
+			printHeading(park.getName()+ " National Park Campgrounds");
+			System.out.println( "Id  Name                               Open       Close         DailyFee");
+			List<Campground> campgrounds = campgroundDAO.getAllCampgrounds(park.getId());
+			for(Campground camp:campgrounds){
+				System.out.print("#"+camp.getCampgroundId()+"  ");
+				System.out.print(String.format("%-35s",camp.getName()));
+				System.out.print(String.format("%-11s",camp.getOpen()));
+				System.out.print(String.format("%-14s",camp.getClosed()));
+				System.out.println(String.format("%-25s","$"+camp.getFee()));
+			}
 			 while(true){
-				  Campground choice2 = (Campground)menu.getChoiceFromOptions(campgroundDAO.getAllCampgrounds().toArray());
-				  handleViewCampground(choice2);		
+
+				  
+				  	String choice = (String)menu.getChoiceFromOptions(RESERVE_MENU_OPTIONS);
+					if(choice.equals(MENU_OPTION_SEARCH_FOR_RESERVE)){
+						handleSearchReservation(park);	
+						}if(choice.equals(MENU_OPTION_RETURN_TO_QUIT)){
+							handleSearchReservation(park);
+						}
 			  }
+		}	
+
+			 private void handleSearchReservation(Park park){
+			
+					printHeading("Search for Campground Reservation");
+					System.out.println( "Id  Name                               Open       Close         DailyFee");
+					List<Campground> campgrounds = campgroundDAO.getAllCampgrounds(park.getId());
+					for(Campground camp:campgrounds){
+						System.out.print("#"+camp.getCampgroundId()+"  ");
+						System.out.print(String.format("%-35s",camp.getName()));
+						System.out.print(String.format("%-11s",camp.getOpen()));
+						System.out.print(String.format("%-14s",camp.getClosed()));
+						System.out.println(String.format("%-25s","$"+camp.getFee()));
+					}
+					while(true){	  
+						Long choice = menu.getSite();
+						LocalDate arrive = menu.getArrivalDate();
+						LocalDate depart = menu.getDepartureDate();
+						long daysBetween = ChronoUnit.DAYS.between(arrive,depart);
+							System.out.println("");
+					System.out.println("Results Matching Your Search Criteria");
+							System.out.println("");
+					System.out.println("Site No.   Max Occup.  Accessible?  Max RV Length     Utility    Cost");
+					List<Site> sites = siteDAO.getAllSites(choice,arrive,depart);
+					for(Site site:sites){
+						System.out.print(String.format("%-15s","#"+site.getSiteNum()));
+						System.out.print(String.format("%-10s",site.getMaxOccupy()));
+						System.out.print(String.format("%-15s",site.isAvailable()));
+						System.out.print(String.format("%-15s",site.getMaxRVLength()));
+						System.out.print(String.format("%-10s",site.isUtilities()));
+						System.out.println(String.format("%-15s","$"+ (daysBetween * site.getDailyFee().longValue())));
+					}
+					Long choice2 = menu.getSiteId();
+					String name = menu.getName();
+					reservationDAO.setReservation(choice2, arrive, depart, name);
+					System.out.print("The reservation has been made and the confirmation id is "+reservationDAO.getReservationId(name, arrive));
+					break;
+				}
+			 }
+				
+//			  Campground choice2 = (Campground)menu.getChoiceFromOptions(campgroundDAO.getAllCampgrounds(park.getId()).toArray());				 
 //			while(true){
 		
 //			printHeading("Park Campgrounds");
@@ -106,7 +184,7 @@ public class CampgroundCLI {
 //			String choice = (String)menu.getChoiceFromOptions(CAMP_MENU_OPTIONS);
 //			 while(true){
 //		}
-			}
+//			}
 private void printHeading(String headingText) {
 	System.out.println("\n"+headingText);
 	for(int i = 0; i < headingText.length(); i++) {
