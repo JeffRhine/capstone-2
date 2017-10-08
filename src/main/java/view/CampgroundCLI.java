@@ -145,7 +145,8 @@ public class CampgroundCLI {
 						System.out.print(String.format("%-14s",Month.of(Integer.parseInt(camp.getClosed())).name()));
 						System.out.println(String.format("%-25s","$"+camp.getFee()));
 					}
-					while(true){	  
+					while(true){	 
+						
 						Long choice = menu.getSite();
 						LocalDate arrive = menu.getArrivalDate();
 						LocalDate depart = menu.getDepartureDate();
@@ -155,14 +156,18 @@ public class CampgroundCLI {
 							System.out.println("");
 					System.out.println("Site No.   Max Occup.  Accessible?  Max RV Length     Utility    Cost");
 					List<Site> sites = siteDAO.getAllSites(choice,arrive,depart);
-					for(Site site:sites){
-						System.out.print(String.format("%-15s","#"+site.getSiteNum()));
-						System.out.print(String.format("%-10s",site.getMaxOccupy()));
-						System.out.print(String.format("%-15s",site.isAvailable()));
-						System.out.print(String.format("%-15s",site.getMaxRVLength()));
-						System.out.print(String.format("%-10s",site.isUtilities()));
-						System.out.println(String.format("%-15s","$"+ (daysBetween * site.getDailyFee().longValue())+".00"));
+					int count;
+//					for(Site site:sites){
+					for(count = 0 ; count < sites.size() ; count ++){
+						System.out.print(count+1);
+						System.out.print(String.format("%-15s","#"+sites.get(count).getSiteNum()));
+						System.out.print(String.format("%-10s",sites.get(count).getMaxOccupy()));
+						System.out.print(String.format("%-15s",sites.get(count).isAvailable() ? "Yes": "No") );
+						System.out.print(String.format("%-15s",sites.get(count).getMaxRVLength()));
+						System.out.print(String.format("%-10s",sites.get(count).isUtilities() ? "Yes": "N/A"));
+						System.out.println(String.format("%-15s","$"+ (daysBetween * sites.get(count).getDailyFee().longValue())+".00"));
 					}
+				
 					Long choice2 = menu.getSiteId();
 					String name = menu.getName();
 					reservationDAO.setReservation(choice2, arrive, depart, name);

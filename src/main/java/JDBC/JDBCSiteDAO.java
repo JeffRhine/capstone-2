@@ -53,4 +53,9 @@ public class JDBCSiteDAO implements DAOSite{
 	
 			return theSite;
 	}
+//	private String convertRV (long maxRVLength){
+//		if(maxRVLength==0){
+//			return "N/A";
+//		} return maxRVLength.;
+//	}
 }

@@ -1,11 +1,14 @@
 package com.techelevator;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
@@ -52,5 +55,17 @@ public class JDBCReservationDAOTest {
 	@After
 	public void rollback() throws SQLException {
 		dataSource.getConnection().rollback();
+	}
+	@Test
+	public List<Reservation> getAllReservations(long campId, LocalDate fromDate,LocalDate toDate){
+		return null;
+	}
+	@Test
+	public void setReservation(long siteId, LocalDate fromDate,LocalDate toDate, String name){
+		
+	}
+	@Test
+	public List<Reservation> getConfirmId(String name,LocalDate fromDate){
+		return null;
 	}
 }

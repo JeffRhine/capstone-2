@@ -1,11 +1,13 @@
 package com.techelevator;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
@@ -52,5 +54,13 @@ public class JDBCCampgroundDAOTest {
 	@After
 	public void rollback() throws SQLException {
 		dataSource.getConnection().rollback();
+	}
+	@Test
+	public List<Campground> getAllCampgrounds(long parkId){
+		return null;
+	}
+	public List<Campground> getCampgroundInfoByPark(long choice){
+		return null;
+		
 	}
 }

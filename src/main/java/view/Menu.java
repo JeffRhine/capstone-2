@@ -47,7 +47,7 @@ public class Menu {
 			System.out.print("Which site should be reserved(enter 0 to cancel)?");
 			String reserveSite = in.nextLine();
 			try{
-				Long site = Long.parseLong(reserveSite);
+				Long site = Long.parseLong(reserveSite);		
 				return site;
 			}catch (NumberFormatException e){
 				System.out.println("invalid campsite number");
@@ -67,6 +67,7 @@ public class Menu {
 			System.out.println();
 			System.out.print("Which campground (enter 0 to cancel)?");
 			String campGround = in.nextLine();
+			if(!campGround.equals("0")){
 			try{	
 				Long camp = Long.parseLong(campGround);
 				if(camp!=0){
@@ -75,6 +76,7 @@ public class Menu {
 			}catch (NumberFormatException e){
 				System.out.println("invalid campground number");
 			}
+		}
 		}
 	}
 	public LocalDate getArrivalDate(){
