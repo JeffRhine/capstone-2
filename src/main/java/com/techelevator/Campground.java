@@ -45,7 +45,7 @@ public BigDecimal getFee() {
 	return fee;
 }
 public void setFee(BigDecimal fee) {
-	this.fee = fee;
+	this.fee = fee.setScale(2);
 }
 @Override
 public String toString() {

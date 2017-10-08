@@ -55,15 +55,20 @@ public class JDBCReservationDAO implements DAOReservation {
 		}
 
 		@Override
-		public String getReservationId(String name,LocalDate fromDate) {
+		public List<Reservation> getConfirmId(String name,LocalDate fromDate) {
+			List<Reservation> reserveInfo = new ArrayList<>();
 			 String reserveId = ("SELECT reservation_id FROM reservation WHERE name =? AND from_date=?");
 			 SqlRowSet reserveNextRow = jdbcTemplate.queryForRowSet(reserveId,name,fromDate);
-//				while(reserveNextRow.next()){
-//					Reservation reservation = mapRowToReservation(reserveNextRow);
-//					reserveInfo.add(reservation);
-//				}
-				return reserveId;
+				while(reserveNextRow.next()){
+					Reservation reservation = mapRowToReservationId(reserveNextRow);
+					reserveInfo.add(reservation);
+				}
+				return reserveInfo;
 		}
-
+		private Reservation mapRowToReservationId(SqlRowSet reserveNextRow){
+			Reservation reservation = new Reservation();
+			reservation.setReservationId(reserveNextRow.getLong("reservation_id"));
+			return reservation;
+		}
 }
 

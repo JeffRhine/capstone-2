@@ -58,7 +58,7 @@ public BigDecimal getDailyFee() {
 	return dailyFee;
 }
 public void setDailyFee(BigDecimal dailyFee) {
-	this.dailyFee = dailyFee;
+	this.dailyFee = dailyFee.setScale(2);
 }
 
 }

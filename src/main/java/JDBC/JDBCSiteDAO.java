@@ -49,7 +49,7 @@ public class JDBCSiteDAO implements DAOSite{
 			theSite.setAvailable(siteNextRow.getBoolean("accessible"));
 			theSite.setMaxRVLength(siteNextRow.getLong("max_rv_length"));
 			theSite.setUtilities(siteNextRow.getBoolean("utilities"));
-			theSite.setDailyFee(siteNextRow.getBigDecimal("daily_fee"));
+			theSite.setDailyFee(siteNextRow.getBigDecimal("daily_fee").setScale(2));
 	
 			return theSite;
 	}
