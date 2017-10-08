@@ -67,9 +67,11 @@ public class Menu {
 			System.out.println();
 			System.out.print("Which campground (enter 0 to cancel)?");
 			String campGround = in.nextLine();
-			try{
+			try{	
 				Long camp = Long.parseLong(campGround);
-				return camp;
+				if(camp!=0){
+					return camp;
+				} 			
 			}catch (NumberFormatException e){
 				System.out.println("invalid campground number");
 			}

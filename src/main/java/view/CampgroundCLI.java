@@ -123,10 +123,7 @@ public class CampgroundCLI {
 				System.out.print(String.format("%-14s",Month.of(Integer.parseInt(camp.getClosed())).name()));
 				System.out.println(String.format("%-25s","$"+camp.getFee()));
 			}
-			 while(true){
-				
-
-				  
+			 while(true){	  
 				  	String choice = (String)menu.getChoiceFromOptions(RESERVE_MENU_OPTIONS);
 					if(choice.equals(MENU_OPTION_SEARCH_FOR_RESERVE)){
 						handleSearchReservation(park);	
@@ -172,7 +169,7 @@ public class CampgroundCLI {
 					List<Reservation> reserveId = reservationDAO.getConfirmId(name, arrive);
 					for (Reservation reserve:reserveId){
 					System.out.print("The reservation has been made and the confirmation id is "+reserve.getReservationId());
-					break;
+					System.exit(0);
 					}
 				}
 			 }
