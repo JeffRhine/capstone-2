@@ -71,9 +71,9 @@ public class CampgroundCLI {
 																			DEPARTURE_DATE};
 	
 	private void run() {
-	String textInBold = "View Parks Interface";
-	printHeading(textInBold);
-	printHeading("Select A Park For Further Details");
+		String textInBold = "View Parks Interface";
+		printHeading(textInBold);
+		printHeading("Select A Park For Further Details");
 	
 	  while(true){
 		  Park choice = (Park)menu.getChoiceFromOptions(parkDAO.getAllParks().toArray());
@@ -123,13 +123,14 @@ public class CampgroundCLI {
 				System.out.print(String.format("%-14s",Month.of(Integer.parseInt(camp.getClosed())).name()));
 				System.out.println(String.format("%-25s","$"+camp.getFee()));
 			}
-			 while(true){	  
-				  	String choice = (String)menu.getChoiceFromOptions(RESERVE_MENU_OPTIONS);
-					if(choice.equals(MENU_OPTION_SEARCH_FOR_RESERVE)){
-						handleSearchReservation(park);	
-						}if(choice.equals(MENU_OPTION_RETURN_TO_QUIT)){
-							break;
-						}
+			 while(true){
+			  	String choice = (String)menu.getChoiceFromOptions(RESERVE_MENU_OPTIONS);
+				if(choice.equals(MENU_OPTION_SEARCH_FOR_RESERVE)){
+					handleSearchReservation(park);	
+				}
+				if(choice.equals(MENU_OPTION_RETURN_TO_QUIT)){
+					break;
+				}
 			  }
 		}	
 
@@ -145,8 +146,7 @@ public class CampgroundCLI {
 						System.out.print(String.format("%-14s",Month.of(Integer.parseInt(camp.getClosed())).name()));
 						System.out.println(String.format("%-25s","$"+camp.getFee()));
 					}
-					while(true){	 
-						
+					while(true){	
 						Long choice = menu.getSite();
 						LocalDate arrive = menu.getArrivalDate();
 						LocalDate depart = menu.getDepartureDate();
@@ -168,13 +168,16 @@ public class CampgroundCLI {
 						System.out.println(String.format("%-15s","$"+ (daysBetween * site.getDailyFee().longValue())+".00"));
 					}
 				
-					Long choice2 = menu.getSiteId();
+					Long choice2 = menu.getSiteId(sites);
+					if(choice2 == 0) {
+						break;
+					}
 					String name = menu.getName();
 					reservationDAO.setReservation(choice2, arrive, depart, name);
 					List<Reservation> reserveId = reservationDAO.getConfirmId(name, arrive);
 					for (Reservation reserve:reserveId){
-					System.out.print("The reservation has been made and the confirmation id is "+reserve.getReservationId());
-					System.exit(0);
+						System.out.print("The reservation has been made and the confirmation id is "+reserve.getReservationId());
+						//System.exit(0);
 					}
 				}
 			 }

@@ -68,7 +68,7 @@ public class JDBCSiteDAOTest {
 		jdbcTemplate.update("DELETE FROM park");
 		dao = new JDBCSiteDAO(dataSource);//fresh new dao before every test
 		parkId=jdbcTemplate.queryForObject("INSERT INTO park (name,location, establish_date,area,visitors,description) VALUES ('PARK','Neverland','2000-01-01','55555','7777777','A String Of Words') RETURNING park_id",Long.class);
-		jdbcTemplate.update("INsert INTO campground (park_id,name, open_from_mm, open_to_mm, daily_fee) VALUES ('1','Crystal Lake','01','12','30') ", Long.class);
+		jdbcTemplate.update("INsert INTO campground (park_id,name, open_from_mm, open_to_mm, daily_fee) VALUES (?,'Crystal Lake','01','12','30') ", parkId);
 		
 		siteId = jdbcTemplate.queryForObject("INSERT INTO site (site_number,max_occupancy,accessible,max_rv_length, utilities) VALUES ('10','6','false','20','false') RETURNING site_id",Long.class);
 		reservationId= jdbcTemplate.queryForObject("INSERT INTO reservation (site_id,name,from_date,to_date,create_date) VALUES ('1','Jeff Test Family Reservation', 2017-10-05, 2017-10-08,2017-10-01) RETURNING reservation_id", Long.class);

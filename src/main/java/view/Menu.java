@@ -5,7 +5,10 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
+
+import com.techelevator.Site;
 
 public class Menu {
 	private PrintWriter out;
@@ -41,14 +44,21 @@ public class Menu {
 		}
 		return choice;
 	}
-	public Long getSiteId(){
+	public Long getSiteId(List<Site> sites){
 		while(true){
 			System.out.println();
 			System.out.print("Which site should be reserved(enter 0 to cancel)?");
 			String reserveSite = in.nextLine();
 			try{
-				Long site = Long.parseLong(reserveSite);		
-				return site;
+				Long siteId = Long.parseLong(reserveSite);
+				if(siteId == 0) {
+					return 0L;
+				}
+				for(Site site : sites) {
+					if(site.getSiteId() == siteId ) {
+						return siteId;
+					}
+				}
 			}catch (NumberFormatException e){
 				System.out.println("invalid campsite number");
 			}
@@ -68,15 +78,15 @@ public class Menu {
 			System.out.print("Which campground (enter 0 to cancel)?");
 			String campGround = in.nextLine();
 			if(!campGround.equals("0")){
-			try{	
-				Long camp = Long.parseLong(campGround);
-				if(camp!=0){
-					return camp;
-				} 			
-			}catch (NumberFormatException e){
-				System.out.println("invalid campground number");
+				try{	
+					Long camp = Long.parseLong(campGround);
+					if(camp!=0){
+						return camp;
+					} 			
+				}catch (NumberFormatException e){
+					System.out.println("invalid campground number");
+				}
 			}
-		}
 		}
 	}
 	public LocalDate getArrivalDate(){
@@ -84,11 +94,11 @@ public class Menu {
 		System.out.print("What is the arrival date? YYYY-MM-DD");
 		String arrive = in.nextLine();
 		try{
-		LocalDate arrivalDate = LocalDate.parse(arrive);
-		 return arrivalDate;
-		}catch(DateTimeParseException dtpe){
-			System.out.println("invalid date");
-		}
+			 LocalDate arrivalDate = LocalDate.parse(arrive);
+			 return arrivalDate;
+			}catch(DateTimeParseException dtpe){
+				System.out.println("invalid date");
+			}
 		}
 	}
 		public LocalDate getDepartureDate(){	
